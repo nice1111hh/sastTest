@@ -1,0 +1,33 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: mydeployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      env: testing
+  template:
+    metadata:
+      name: testpod1
+      labels:
+        env: testing
+    spec:
+      containers:
+        - name: c00
+          image: image_str
+          ports:
+            - containerPort: 80
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: demoservice
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    env: testing
+  type: NodePort
