@@ -22,7 +22,7 @@ for i in range(len(test_txt['results'])):
     exit(1)
 
  else:
-    #print('there are no high/medium found so pipeline continue' )
+    print('there are no high/medium found so pipeline continue' )
     continue
 
 print(count)
