@@ -3,8 +3,7 @@ import requests
 import sys
 
 #url = 'http://3.135.238.207:8080/api/v2/findings?limit=1000'
-url = 'http://3.135.238.207:8080/finding?test_import_finding_action__test_import=&title=&component_name=&component_version=&date=&cve=&last_reviewed=&last_status_update=&mitigated=&test__engagement__version=&test__version=&status=&active=unknown&verified=unknown&duplicate=&is_mitigated=&out_of_scope=unknown&false_p=unknown&risk_accepted=unknown&has_component=unknown&has_notes=unknown&file_path=&unique_id_from_tool=&vuln_id_from_tool=&service=&param=&payload=&risk_acceptance=&has_finding_group=unknown&tags=&test__tags=147&test__engagement__tags=&test__engagement__product__tags=&tag=&not_tags=&not_test__tags=&not_test__engagement__tags=&not_test__engagement__product__tags=&not_tag=&o='
-
+url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=147'
 headers = {'content-type': 'application/json',
            'Authorization': 'Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b'}
 r = requests.get(url, headers=headers, verify=True)# set verify to False if ssl cert is self-signed
