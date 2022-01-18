@@ -18,8 +18,8 @@ for i in range(len(test_txt['results'])):
  if (test_txt['results'][i]['severity']) == 'High' or (test_txt['results'][i]['severity']) == 'Medium' and (test_txt['results'][i]['found_by']) == 19:
 
     print('severity is High/Medium so pipeline terminated')
-    # print(count)
-    exit(1)
+    print(count)
+    #exit(1)
 
  else:
     print('there are no high/medium found so pipeline continue' )
