@@ -3,7 +3,7 @@ import requests
 import sys
 
 #url = 'http://3.135.238.207:8080/api/v2/findings?limit=1000'
-url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=147'
+url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=151'
 headers = {'content-type': 'application/json',
            'Authorization': 'Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b'}
 r = requests.get(url, headers=headers, verify=True)# set verify to False if ssl cert is self-signed
