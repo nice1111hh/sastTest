@@ -3,7 +3,7 @@ import requests
 import sys
 import jenkins
 
-BUILD_NUMBER = "$currentBuild.number"
+BUILD_NUMBER = $currentBuild.number
 print(BUILD_NUMBER)
 
 #url = 'http://3.135.238.207:8080/api/v2/findings?limit=1000'
