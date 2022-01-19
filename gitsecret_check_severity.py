@@ -1,6 +1,8 @@
 import json
 import requests
 import sys
+BUILD_NUMBER = "$currentBuild.number"
+print(BUILD_NUMBER)
 
 #url = 'http://3.135.238.207:8080/api/v2/findings?limit=1000'
 url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=151'
@@ -15,7 +17,7 @@ for i in range(len(test_txt['results'])):
  count+=1
  #print (test_txt['results'][i]['found_by'])
 
- if (test_txt['results'][i]['severity']) == 'High' or (test_txt['results'][i]['severity']) == 'Medium' and (test_txt['results'][i]['found_by']) == 19:
+ if ((test_txt['results'][i]['severity']) == 'High' or (test_txt['results'][i]['severity']) == 'Medium') and (test_txt['results'][i]['found_by']) == 19:
     count+=1
     print('severity is High/Medium so pipeline terminated')
     print(count)
