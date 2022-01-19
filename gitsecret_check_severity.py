@@ -2,9 +2,6 @@ import json
 import requests
 import sys
 
-
-
-
 #url = 'http://3.135.238.207:8080/api/v2/findings?limit=1000'
 url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=$BUILD_ID'
 headers = {'content-type': 'application/json',
