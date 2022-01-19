@@ -1,6 +1,8 @@
 import json
 import requests
 import sys
+import jenkins
+
 BUILD_NUMBER = "$currentBuild.number"
 print(BUILD_NUMBER)
 
