@@ -19,7 +19,7 @@ for i in range(len(test_txt['results'])):
     
     print('severity is High/Medium so pipeline terminated')
     print(count)
-    exit(1)
+    #exit(1)
 
  else:
     print('there are no high/medium found so pipeline continue' )
