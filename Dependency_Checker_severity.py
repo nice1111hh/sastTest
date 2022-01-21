@@ -18,7 +18,7 @@ for i in range(len(test_txt['results'])):
  if ((test_txt['results'][i]['severity']) == 'High' or (test_txt['results'][i]['severity']) == 'Medium') and (test_txt['results'][i]['found_by']) == [76]:
     
     print('severity is High/Medium so pipeline terminated')
-    print(count)
+    #print(count)
     exit(1)
 
  else:
