@@ -15,7 +15,7 @@ for i in range(len(test_txt['results'])):
  count+=1
  #print (test_txt['results'][i]['found_by'])
 
- if ((test_txt['results'][i]['severity']) == 'High' or (test_txt['results'][i]['severity']) == 'Medium') and (test_txt['results'][i]['found_by']) == [72]:
+ if ((test_txt['results'][i]['severity']) == 'High' or (test_txt['results'][i]['severity']) == 'Medium') and (test_txt['results'][i]['found_by']) == [7]:
     
     print('severity is High/Medium found in Nikto scan so pipeline terminated')
     #print(count)
