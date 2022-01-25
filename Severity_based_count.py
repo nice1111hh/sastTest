@@ -1,9 +1,6 @@
 import json
-
 import requests
-
 import sys
-
 url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=BUILD_ID'
 headers = {'content-type': 'application/json',
 'Authorization': 'Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b'}
@@ -16,23 +13,12 @@ count_high = 0
 
 count_medium = 0
 for i in range(len(test_txt['results'])):
-    if (test_txt['results'][i]['found_by']) == [76]:
+    if (test_txt['results'][i]['found_by']) == [19]:
 
 
         if (test_txt['results'][i]['severity'])== 'High':
 
             count_high+=1
-
-
-            #exit(1)
-
-
-
-
-
-            #print((test_txt['results'][i]['severity']), count)
-
-
 
         elif (test_txt['results'][i]['severity'])== 'Medium':
 
