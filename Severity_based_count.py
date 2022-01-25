@@ -35,5 +35,5 @@ print('Medium Count is: ', count_medium)
 
 if count_high > 2:
     
-    print("more than 2  high severity found")
+    print("more than 2  high severity found so terminated pipeline")
     exit(1)
