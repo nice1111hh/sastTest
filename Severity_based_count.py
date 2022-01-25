@@ -34,5 +34,6 @@ print('High Count is: ', count_high)
 print('Medium Count is: ', count_medium)
 
 if count_high > 2:
-    exit()
+    
     print("more than 2  high severity found")
+    exit(1)
