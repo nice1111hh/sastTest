@@ -23,7 +23,7 @@ for i in range(len(test_txt['results'])):
         elif (test_txt['results'][i]['severity'])== 'Medium':
 
             count_medium+=1
-        elif (test_txt['results'][i]['severity'])== 'Medium':
+        elif (test_txt['results'][i]['severity'])== 'Low':
             count_low+=1        
     else:
 
@@ -33,7 +33,7 @@ for i in range(len(test_txt['results'])):
 
 print('High Count is: ', count_high)
 print('Medium Count is: ', count_medium)
-print('Medium Count is: ', count_low)
+print('Low Count is: ', count_low)
 
 if count_high > 2:
     
