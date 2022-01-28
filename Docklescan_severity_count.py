@@ -10,7 +10,7 @@ r = requests.get(url, headers=headers, verify=True) # set verify to False if ssl
 
 test_txt = r.json()
 count_high = 0
-
+count_low = 0
 count_medium = 0
 for i in range(len(test_txt['results'])):
     if (test_txt['results'][i]['found_by']) == [73]:
@@ -23,7 +23,8 @@ for i in range(len(test_txt['results'])):
         elif (test_txt['results'][i]['severity'])== 'Medium':
 
             count_medium+=1
-
+        elif (test_txt['results'][i]['severity'])== 'Medium':
+            count_low+=1        
     else:
 
         # print('there are no high/medium found so pipeline continue' )
@@ -32,11 +33,14 @@ for i in range(len(test_txt['results'])):
 
 print('High Count is: ', count_high)
 print('Medium Count is: ', count_medium)
+print('Medium Count is: ', count_low)
 
 if count_high > 2:
     
     print("more than 2  high severity found so terminated pipeline")
-    exit(1)
+    #exit(1)
 elif count_medium > 5:
     print("more than 2  medium severity found so terminated pipeline")
-    exit(1)
+    #exit(1)
+elif count_low > 3:
+    print("more than 2  Low severity found so terminated pipeline")
