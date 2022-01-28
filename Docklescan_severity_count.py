@@ -39,8 +39,8 @@ if count_high > 2:
     
     print("more than 2  high severity found so terminated pipeline")
     #exit(1)
-elif count_medium > 5:
+elif count_medium > 1:
     print("more than 2  medium severity found so terminated pipeline")
-    #exit(1)
+    exit()
 elif count_low > 3:
     print("more than 2  Low severity found so terminated pipeline")
