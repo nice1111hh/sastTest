@@ -1,0 +1,446 @@
+pipeline {
+      environment {
+        AWS_ACCOUNT_ID="458277318855"
+        AWS_DEFAULT_REGION="us-east-2" 
+        IMAGE_REPO_NAME="newrepo"
+        IMAGE_TAG="latest"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+        def BUILD_NUMBER = "$currentBuild.number"
+        
+    }
+    
+    agent any
+   
+    stages {
+        stage('Checkout using SOURCE_BRANCH') {
+             agent { label 'build'}
+            steps { 
+             git branch: 'master', url: 'https://Mukeshit91@bitbucket.org/Mukeshit91/docker-vulnerable-dvwa.git'
+   }
+        }
+        stage ('Check-Git-Secrets') {
+         agent { label 'build'}
+        steps {
+            sh 'export BUILD_NUM=$BUILD_NUMBER'
+            sh 'echo $BUILD_NUM'
+            sh 'set'
+          
+           // sh 'rm trufflehog || true'
+            //sh 'docker pull gesellix/trufflehog'
+           // sh 'docker run -t gesellix/trufflehog --json https://Mukeshit91@bitbucket.org/Mukeshit91/repo.git > trufflehog.json'
+            //sh 'cat trufflehog.json'
+            sh 'rm gitsecret_report.json || true'
+            //sh 'detect-secrets audit .secrets.baseline'
+           // sh 'sudo chmod +x /home/ubuntu/detect-secrets/'
+           //sh 'git clone https://github.com/Mukeshit91/DVWA.git'
+            //git branch: 'master', url: 'https://Mukeshit91@bitbucket.org/Mukeshit91/repo.git'
+            //sh chmod +x /home/ubuntu/.local/bin/detect-secrets
+            sh '/home/ubuntu/.local/bin/detect-secrets -C /home/ubuntu/workspace/Secure_cicd@2 scan > /home/ubuntu/detect-secrets/.secrets.baseline >gitsecret_report.json'
+           //sh 'detect-secrets scan /home/ubuntu/workspace/Devsecops --all-files > /home/ubuntu/detect-secrets/.secret.baseline > secrets.json'
+            sh 'cat gitsecret_report.json'
+            sh 'echo $BUILD_NUMBER'
+            
+             sh '''
+             time=$(date +'%Y-%m-%d')        
+		sudo curl --location --request POST 'http://3.135.238.207:8080/api/v2/import-scan/' \
+--header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b' \
+--form 'engagement="8"' \
+--form 'verified="true"' \
+--form 'active="true"' \
+--form 'lead="1"' \
+--form tags=$BUILD_NUMBER \
+--form scan_date=$date \
+--form 'scan_type="Detect-secrets Scan"' \
+--form 'minimum_severity="Medium"' \
+--form 'skip_duplicates="true"' \
+--form 'close_old_findings="false"' \
+--form 'file=@"/home/ubuntu/workspace/Secure_cicd@2/gitsecret_report.json"'
+
+'''
+/* sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/gitsecret_check_severity.py
+cat /home/ubuntu/workspace/Secure_cicd@2/gitsecret_check_severity.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/gitsecret_check_severity.py
+
+''' */
+
+
+ /* sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Severity_based_count.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Severity_based_count.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Severity_based_count.py
+
+'''
+*/
+
+
+
+
+/*sh '''
+a=$BUILD_NUMBER
+sudo curl --location --request GET 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags="$BUILD_ID"' --header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b'|jq
+sudo curl --location --request GET 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=$BUILD_NUMBER' --header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b'|(jq '.results[] | select (.severity=="High" or .severity=="Medium") and (.found_by==[19])')
+echo $?
+if [ $? -ne 0 ]
+then
+   echo "stage continue"
+else
+  echo "report has high severity so pipeline break here"
+  exit 1
+  echo "testing code"
+fi
+
+''' */ 
+
+    }
+}
+
+
+     
+         
+
+       stage ('Source-Composition-Analysis') {
+         agent { label 'build'}
+        steps {
+            sh 'rm dependency-check-report.xml|| true'
+            sh 'rm owasp-* || true'
+        
+           sh 'wget https://raw.githubusercontent.com/devopssecure/webapp/master/owasp-dependency-check.sh'
+           //sh 'wget https://bitbucket.org/Mukeshit91/repo/src/master/owasp-dependency-check.sh'
+            sh 'chmod +x owasp-dependency-check.sh'
+            sh 'bash owasp-dependency-check.sh'
+            sh 'cat /home/ubuntu/OWASP-Dependency-Check/reports/dependency-check-report.xml'
+            
+          sh '''
+             time=$(date +'%Y-%m-%d')        
+		sudo curl --location --request POST 'http://3.135.238.207:8080/api/v2/import-scan/' \
+--header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b' \
+--form 'engagement="8"' \
+--form 'verified="true"' \
+--form 'active="true"' \
+--form 'lead="1"' \
+--form tags=$BUILD_NUMBER \
+--form scan_date=$time \
+--form 'scan_type="Dependency Check Scan"' \
+--form 'minimum_severity="Medium"' \
+--form 'skip_duplicates="true"' \
+--form 'close_old_findings="false"' \
+--form 'file=@"/home/ubuntu/OWASP-Dependency-Check/reports/dependency-check-report.xml"'
+
+'''
+/* sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Dependency_Checker_severity.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Dependency_Checker_severity.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Dependency_Checker_severity.py
+
+'''  */
+/*sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Dependency_severity_count.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Dependency_severity_count.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Dependency_severity_count.py
+
+'''
+*/
+
+
+
+/*sh '''
+cat cat /home/ubuntu/OWASP-Dependency-Check/reports/dependency-check-report.json|grep -i '"severity": "MEDIUM"'
+echo $?
+if [ $? -ne 0 ]
+then
+  echo "stage successful"   
+else
+  exit
+fi
+
+''' 
+*/
+//sh 'sudo curl --location --request POST http://3.135.238.207:8080/api/v2/import-scan/ --header Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b --form engagement="1" --form verified="true" --form active="true" --form lead="1" --form tags="test" --form scan_date=$time --form scan_type="Dependency Check Scan" --form minimum_severity="Info" --form skip_duplicates="true" --form close_old_findings="false" --form file=@"/home/ubuntu/OWASP-Dependency-Check/reports/dependency-check-report.xml"'
+
+            }
+        }
+      /*  stage('SAST scan') {
+    agent { label 'test'}
+      steps{
+         script {
+        appscan application: 'a9fed273-72dc-4dc6-bc14-e24430724574', credentials: 'HCL appscan',
+        email: true, 
+        name: 'Static Analyzer', 
+        scanner: static_analyzer(hasOptions: false, target: '/home/ubuntu/workspace/Devsecops'), 
+        type: 'Static Analyzer'
+
+         }  
+     }
+   }  */
+   
+  stage('SonarQube Analysis')
+{
+agent { label 'build' }
+steps{
+  withSonarQubeEnv('SonarQube') {
+ // dir ("./projectjar") {
+   sh '''
+   
+
+/opt/sonar-scanner/bin/sonar-scanner \
+  -Dsonar.projectKey=Sonar-report \
+  -Dsonar.sources=/home/ubuntu/workspace/Secure_cicd@2 \
+  -Dsonar.host.url=http://18.188.188.140:9000
+  
+ 
+  '''
+}
+}
+}
+/* stage('Quality Gate'){
+      agent { label 'build'}   
+      steps{
+         script {
+          timeout(time: 5, unit: 'MINUTES') {
+               
+              def qg = waitForQualityGate()
+             // echo 'status "${qg.status}"'
+              if (qg.status != 'OK') {
+                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
+              }
+          }
+      }  
+}
+} */
+         
+
+//}
+          
+           // Building Docker images
+    stage('Building image') {
+    agent { label 'build'}
+      steps{
+         dir("/home/ubuntu/workspace/Secure_cicd@2") {
+        script {
+          dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+          
+        }
+      }
+    }
+    }
+     stage('Logging into AWS ECR') {
+         agent { label 'build'}
+            steps {
+                script {
+                sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                }
+                 
+            }
+        }
+  stage('scaning config file') {
+    agent { label 'build'}
+      steps{
+          
+          
+        //sh 'trivy image --severity HIGH,CRITICAL --format template --template "@trivy/junit.tpl" -o trivy_report.xml myrepo:latest'
+      // sh 'trivy config --severity HIGH,CRITICAL -f json -o trivy_report.json /home/ubuntu/workspace/Devsecops'
+       //sh 'trivy image --severity HIGH,CRITICAL -f json -o trivy_report.json myrepo:latest'
+        //sh 'trivy config -- severity HIGH /home/ubuntu/workspace/Devsecops'
+        sh 'rm dockle_report.json || true'
+       sh 'sudo /usr/local/bin/dockle -f json -o dockle_report.json ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}'
+        
+         sh '''
+             time=$(date +'%Y-%m-%d')           
+		sudo curl --location --request POST 'http://3.135.238.207:8080/api/v2/import-scan/' \
+--header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b' \
+--form 'engagement="8"' \
+--form 'verified="true"' \
+--form 'active="true"' \
+--form 'lead="1"' \
+--form tags=$BUILD_NUMBER \
+--form scan_date=$time \
+--form 'scan_type="Dockle Scan"' \
+--form 'minimum_severity="Low"' \
+--form 'skip_duplicates="true"' \
+--form 'close_old_findings="false"' \
+--form 'file=@"/home/ubuntu/workspace/Secure_cicd@2/dockle_report.json"'
+
+'''
+
+
+/*sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Docklescan_check_severity.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Docklescan_check_severity.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Docklescan_check_severity.py
+
+''' */
+
+/* sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Docklescan_severity_count.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Docklescan_severity_count.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Docklescan_severity_count.py
+
+'''  */
+
+      }
+   
+    } 
+  
+        // Uploading Docker images into AWS ECR
+    stage('Pushing to ECR') {
+    agent { label 'build'}
+     steps{  
+         script {
+                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+         }
+        }
+      }
+          stage('Deploy to Eks')
+{
+  agent { label 'test'}
+  steps {
+       git branch: 'master', url: 'https://Mukeshit91@bitbucket.org/Mukeshit91/docker-vulnerable-dvwa.git'
+    script {
+        
+        sh """echo "$REPOSITORY_URI" """
+        sh """sed -i "s|image_str|$REPOSITORY_URI|g" /home/ubuntu/workspace/Secure_cicd/deployment.yml"""
+        sh "kubectl apply -f /home/ubuntu/workspace/Secure_cicd/deployment.yml"
+
+   }
+  }
+}
+     stage ('DAST') {
+		  agent { label 'build'}
+		    	steps {
+			     script {
+                     
+               sh 'rm zap_report.xml || true'      
+                     //sh 'docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t http://18.222.18.171:32607/ -g gen.conf -r zap_report.html || true'
+            sh 'docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t http://18.222.18.171:32530/ -g gen.conf -x zap_report.xml || true'
+            sh '''
+             time=$(date +'%Y-%m-%d')        
+           sudo curl --location --request POST 'http://3.135.238.207:8080/api/v2/import-scan/' \
+--header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b' \
+--form 'engagement="8"' \
+--form 'verified="true"' \
+--form 'active="true"' \
+--form 'lead="1"' \
+--form tags=$BUILD_NUMBER \
+--form scan_date=$time \
+--form 'scan_type="ZAP Scan"' \
+--form 'minimum_severity="Low"' \
+--form 'skip_duplicates="true"' \
+--form 'close_old_findings="false"' \
+--form 'file=@"/home/ubuntu/workspace/Secure_cicd@2/zap_report.xml"'
+
+'''
+/*
+sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Zapscan_check_severity.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Zapscan_check_severity.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Zapscan_check_severity.py
+
+''' */
+sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Zap_severity_count.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Zap_severity_count.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Zap_severity_count.py
+
+'''
+
+
+                     //sh "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://18.222.18.171:32607/ -g gen.conf -r zap_report.html"
+			    }  
+			}
+		}  
+		
+		
+		stage ('Nikto Scan') 
+        {
+          agent { label 'build'}  
+		    steps {
+			sh 'rm nikto-output.xml || true'
+			sh 'docker pull secfigo/nikto:latest'
+			sh 'sudo docker run --user $(id -u):$(id -g) --rm -v $(pwd):/report -i secfigo/nikto:latest -h http://18.222.18.171:32530/ -output /report/nikto-output.xml'
+			sh 'cat nikto-output.xml || true'
+			sh '''
+            time=$(date +'%Y-%m-%d')
+           sudo curl --location --request POST 'http://3.135.238.207:8080/api/v2/import-scan/' \
+--header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b' \
+--form 'engagement="8"' \
+--form 'verified="true"' \
+--form 'active="true"' \
+--form 'lead="1"' \
+--form tags=$BUILD_NUMBER \
+--form scan_date=$time \
+--form 'scan_type="Nikto Scan"' \
+--form 'minimum_severity="Medium"' \
+--form 'skip_duplicates="true"' \
+--form 'close_old_findings="false"' \
+--form 'file=@"/home/ubuntu/workspace/Secure_cicd@2/nikto-output.xml"'
+
+'''
+sh 'sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Niktoscan_check_severity.py'
+
+sh '''sed -i "s|BUILD_ID|$BUILD_NUMBER|g" /home/ubuntu/workspace/Secure_cicd@2/Niktoscan_check_severity.py
+cat /home/ubuntu/workspace/Secure_cicd@2/Niktoscan_check_severity.py
+sudo python3 /home/ubuntu/workspace/Secure_cicd@2/Niktoscan_check_severity.py
+
+'''
+			
+			
+		    }
+	    }
+        
+        
+        
+        	    stage ('Port Scan') {
+        	                 agent { label 'build'}
+
+		    steps {
+			sh 'rm nmap* || true'
+			sh 'docker run --rm -v "$(pwd)":/data uzyexe/nmap -sS -sV -oX nmap 18.222.18.171'
+			sh 'cat nmap'
+			sh '''
+             time=$(date +'%Y-%m-%d')        
+		sudo curl --location --request POST 'http://3.135.238.207:8080/api/v2/import-scan/' \
+--header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b' \
+--form 'engagement="8"' \
+--form 'verified="true"' \
+--form 'active="true"' \
+--form 'lead="1"' \
+--form tags=$BUILD_NUMBER \
+--form scan_date=$time \
+--form 'scan_type="Nmap Scan"' \
+--form 'minimum_severity="Medium"' \
+--form 'skip_duplicates="true"' \
+--form 'close_old_findings="false"' \
+--form 'file=@"/home/ubuntu/workspace/Secure_cicd@2/nmap"'
+
+'''
+		    }
+	    }
+	    
+	    stage ('SSL Checks') {
+	                 agent { label 'build'}
+
+		    steps {
+		        
+		       
+        sh '''
+           // python3 -m sslyze --mozilla-config=modern 18.222.18.171:32607 --json_out=sslyze-output.json || true
+            python3 -m sslyze --mozilla-config=modern mozilla.com --json_out=sslyze-output.json || true
+			    cat sslyze-output.json
+			    '''
+		sh '''
+             time=$(date +'%Y-%m-%d')        
+		sudo curl --location --request POST 'http://3.135.238.207:8080/api/v2/import-scan/' \
+--header 'Authorization: Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b' \
+--form 'engagement="8"' \
+--form 'verified="true"' \
+--form 'active="true"' \
+--form 'lead="1"' \
+--form tags=$BUILD_NUMBER \
+--form scan_date=$time \
+--form 'scan_type="Sslyze Scan"' \
+--form 'minimum_severity="Medium"' \
+--form 'skip_duplicates="true"' \
+--form 'close_old_findings="false"' \
+--form 'file=@"/home/ubuntu/workspace/Secure_cicd@2/sslyze-output.json"'
+
+'''	    
+		
+		    }
+	    }
+	    
+    }
+}
