@@ -41,8 +41,8 @@ if count_high > 2:
     s.starttls()
     s.login('AKIAWVM3U6DD6PPTNVVU', 'BAnvfly44m17RnmWbQvT2bq0BCES+tQrjZrGf/Pz5ITI')
 
-    msg = 'From: mukeshit100@gmail.com\nTo: mukeshit91@gmail.com\nSubject: Test email\n\n Report has High severity please fix as soon as possible'
-    s.sendmail('mukeshit100@gmail.com','mukeshit91@gmail.com', msg)
+    msg = 'From: mukeshit100@gmail.com\nTo: mukeshkumar7@kpmg.com\nSubject: BUILD_ID\n\n Report has High severity please fix as soon as possible'
+    s.sendmail('mukeshit100@gmail.com','mukeshkumar7@kpmg.com', msg)
 
    
     print("more than 2  high severity found so terminated pipeline")
