@@ -3,9 +3,9 @@ import requests
 import sys
 import smtplib
 
-url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=BUILD_ID'
+url = 'http://3.144.2.26:8080/api/v2/findings/?tags=&test__tags=BUILD_ID'
 headers = {'content-type': 'application/json',
-'Authorization': 'Token 04a3f27e413800d03838d1d5ac9c5dcdb91e672b'}
+'Authorization': 'Token 98733820ad5ac2160778b44c860dee3055deca70'}
 r = requests.get(url, headers=headers, verify=True) # set verify to False if ssl cert is self-signed
 #print (r.json())
 #y=json.loads(r.json())
