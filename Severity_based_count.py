@@ -36,8 +36,8 @@ print('Medium Count is: ', count_medium)
 
 if count_high > 2:
    
-    s = smtplib.SMTP()
-    s.connect('email-smtp.us-east-1.amazonaws.com', 587)
+    s = smtplib.SMTP('email-smtp.us-east-1.amazonaws.com', 587)
+    #s.connect('email-smtp.us-east-1.amazonaws.com', 587)
     s.starttls()
     s.login('AKIAWVM3U6DD6PPTNVVU', 'BAnvfly44m17RnmWbQvT2bq0BCES+tQrjZrGf/Pz5ITI')
 
