@@ -3,7 +3,7 @@ import requests
 import sys
 import smtplib
 
-url = 'http://3.144.2.26:8080/api/v2/findings/?tags=&test__tags=BUILD_ID'
+url = 'http://3.135.238.207:8080/api/v2/findings/?tags=&test__tags=BUILD_ID'
 headers = {'content-type': 'application/json',
 'Authorization': 'Token 98733820ad5ac2160778b44c860dee3055deca70'}
 r = requests.get(url, headers=headers, verify=True) # set verify to False if ssl cert is self-signed
@@ -20,14 +20,7 @@ for i in range(len(test_txt['results'])):
 
         if (test_txt['results'][i]['severity'])== 'High':
         
-            s = smtplib.SMTP()
-            s.connect('email-smtp.us-east-1.amazonaws.com', 587)
-            s.starttls()
-            s.login('AKIAWVM3U6DD6PPTNVVU', 'BAnvfly44m17RnmWbQvT2bq0BCES+tQrjZrGf/Pz5ITI')
-
-            msg = 'From: mukeshit100@gmail.com\nTo: mukeshit91@gmail.com\nSubject: Test email\n\n Report has High severity please fix as soon as possible'
-            s.sendmail('mukeshit100@gmail.com','mukeshit91@gmail.com', msg)
-
+            
             count_high+=1
 
         elif (test_txt['results'][i]['severity'])== 'Medium':
