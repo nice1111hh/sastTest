@@ -20,13 +20,13 @@ for i in range(len(test_txt['results'])):
 
         if (test_txt['results'][i]['severity'])== 'High':
         
-        s = smtplib.SMTP()
-       s.connect('email-smtp.us-east-1.amazonaws.com', 587)
-       s.starttls()
-       s.login('AKIAWVM3U6DD6PPTNVVU', 'BAnvfly44m17RnmWbQvT2bq0BCES+tQrjZrGf/Pz5ITI')
+            s = smtplib.SMTP()
+            s.connect('email-smtp.us-east-1.amazonaws.com', 587)
+            s.starttls()
+            s.login('AKIAWVM3U6DD6PPTNVVU', 'BAnvfly44m17RnmWbQvT2bq0BCES+tQrjZrGf/Pz5ITI')
 
-       msg = 'From: mukeshit100@gmail.com\nTo: mukeshit91@gmail.com\nSubject: Test email\n\n Report has High severity please fix as soon as possible'
-       s.sendmail('mukeshit100@gmail.com','mukeshit91@gmail.com', msg)
+            msg = 'From: mukeshit100@gmail.com\nTo: mukeshit91@gmail.com\nSubject: Test email\n\n Report has High severity please fix as soon as possible'
+            s.sendmail('mukeshit100@gmail.com','mukeshit91@gmail.com', msg)
 
             count_high+=1
 
