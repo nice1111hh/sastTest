@@ -41,7 +41,7 @@ if count_high > 2:
     s.starttls()
     s.login('AKIAWVM3U6DD6PPTNVVU', 'BAnvfly44m17RnmWbQvT2bq0BCES+tQrjZrGf/Pz5ITI')
 
-    msg = 'From: mukeshit100@gmail.com\nTo: mukeshkumar7@kpmg.com\nSubject:Build Number- BUILD_ID\n\n Report has High severity please fix as soon as possible'
+    msg = 'From: mukeshit100@gmail.com\nTo: mukeshkumar7@kpmg.com\nSubject:Build No- BUILD_ID\n\n Detect secrets scan tools detect High severity in report please fix as soon as possible'
     s.sendmail('mukeshit100@gmail.com','mukeshkumar7@kpmg.com', msg)
 
    
