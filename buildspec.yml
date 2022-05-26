@@ -8,6 +8,7 @@ phases:
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
+      - pwd
       - ls -lrth
       - chmod 777 owasp-dependency-check.sh
       - owasp-dependency-check.sh
