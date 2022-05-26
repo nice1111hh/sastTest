@@ -5,7 +5,7 @@ phases:
     commands:
      # - apt-get update
      #- apt-get install -y curl
-      - systemctl status docker
+      - sudo systemctl status docker
   pre_build:
     commands:
       - echo Nothing to do in the pre_build phase...
