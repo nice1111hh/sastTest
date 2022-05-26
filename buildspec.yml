@@ -9,6 +9,7 @@ phases:
     commands:
       - echo Nothing to do in the pre_build phase...
       - ls -lrth
+      - chmod 777 /var/run/docker.sock
       - docker ps
   build:
     commands:
