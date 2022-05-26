@@ -9,6 +9,8 @@ phases:
     commands:
       - echo Nothing to do in the pre_build phase...
       - ls -lrth
+      - owasp-dependency-check.sh
+      - ls -lrth
 
   build:
     commands:
