@@ -17,7 +17,10 @@ phases:
       #- timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
       - chmod 777 owasp-dependency-check.sh
       - ./owasp-dependency-check.sh
+      - ls -lrth /odc-reports
+      - cat /odc-reports/report/dependency-check-junit.xml
       - ls -lrth
+      
 
   build:
     commands:
