@@ -14,6 +14,8 @@ phases:
       - echo Nothing to do in the pre_build phase...
       - detect-secrets  scan > gitsecret_report.json
       - cat gitsecret_report.json
+      - chmod 777 pushtodefectdojo.sh
+      - ./pushtodefectdojo.sh
      
       - pwd
       - ls -lrth
@@ -26,6 +28,8 @@ phases:
       #- ls -lrth /odc-reports
       - cat dependency-check-report.xml
       - ls -lrth
+      
+      
       
 
   build:
