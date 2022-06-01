@@ -7,7 +7,7 @@ sudo curl --location --request POST 'http://52.14.192.9:8080/api/v2/import-scan/
 --form 'verified="true"' \
 --form 'active="true"' \
 --form 'lead="1"' \
---form tags=$BUILD_NUMBER \
+#--form tags=$BUILD_NUMBER \
 --form scan_date=$date \
 --form 'scan_type="Detect-secrets Scan"' \
 --form 'minimum_severity="Info"' \
