@@ -14,7 +14,7 @@ phases:
       - echo Nothing to do in the pre_build phase...
       - detect-secrets  scan > gitsecret_report.json
       - cat gitsecret_report.json
-      -  time=$(date +'%Y-%m-%d')        
+      #- time=$(date +'%Y-%m-%d')        
 	  -	sudo curl --location --request POST 'http://52.14.192.9:8080/api/v2/import-scan/' 
 --header 'Authorization: Token a1c2e4b944e0ba004336bccc9ec5dd2fcfdba1b2' 
 --form 'engagement="2"' 
