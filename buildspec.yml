@@ -13,6 +13,7 @@ phases:
     commands:
       - echo Nothing to do in the pre_build phase...
       - detect-secrets  scan > gitsecret_report.json
+      - cat gitsecret_report.json
       - pwd
       - ls -lrth
       #- echo Setting up docker
