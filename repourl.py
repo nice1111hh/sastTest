@@ -30,8 +30,7 @@ same.discard('\n')
 for line in same:
     print(line)
     command_to_run = 'git clone ' + line
-    # os.system(command_to_run)
+    os.system(command_to_run)
     os.remove("old_file.txt")
-    os.rename('new_file.txt', 'old_file.txt')
-    shutil.copy('new_file.txt', 'old_file.txt')
-    
+    #os.rename('new_file.txt', 'old_file.txt')
+    shutil.copy('new_file.txt', 'old_file.txt') 
