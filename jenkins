@@ -24,7 +24,7 @@ pipeline {
             sh 'export BUILD_NUM=$BUILD_NUMBER'
             sh 'echo $BUILD_NUM'
             sh 'set'
-          
+            // echo trufflehog
            // sh 'rm trufflehog || true'
             //sh 'docker pull gesellix/trufflehog'
            // sh 'docker run -t gesellix/trufflehog --json https://Mukeshit91@bitbucket.org/Mukeshit91/repo.git > trufflehog.json'
