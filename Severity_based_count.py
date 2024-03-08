@@ -33,6 +33,7 @@ for i in range(len(test_txt['results'])):
 
 print('High Count is: ', count_high)
 print('Medium Count is: ', count_medium)
+#Checking
 
 if count_high > 2:
    
