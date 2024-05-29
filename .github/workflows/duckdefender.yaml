@@ -43,4 +43,4 @@ jobs:
           -e WORKSPACE_PATH="/src" \
           -e LOG_LEVEL="debug" \
           --entrypoint /bin/sh \
-          -v "${{ github.workspace }}":/src  "${{env.docker_tag}}" -c "duckdefender"
+          -v "${{ github.workspace }}":/src  "${{env.docker_tag}}" -c "duckdefender -l debug"
