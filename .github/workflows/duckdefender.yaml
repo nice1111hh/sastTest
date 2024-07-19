@@ -1,46 +1,27 @@
-env:
-  docker_tag: schalla/duckdefender-v2:l-0.0.1 
-  
-# This is a basic workflow to help you get started with GitHub Actions 
-name: DuckDefender
-
-# Triggers the workflow on push events but only for the all the critical branches
+---
+name: Pull Request
 on:
   push:
-    branches: [ "master", "main", "release", "develop" ]
-  
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    branches:
+    - main
+
+## GITHUB_TOKEN authentication, add only if you're not going to use a PAT
+permissions:
+  contents: write
+
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-# Testing
-
-# Steps represent a sequence of tasks that will be executed as part of the job
+    name: Checks
+    runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Download image from docker hub
-
-    - name: Download latest DuckDefender
-      run: docker pull "${{env.docker_tag}}"
-
-    - name: Run DuckDefender
-      run: |
-        docker run -e GITHUB_REPOSITORY_OWNER="${{github.repository_owner}}" \
-          -e GITHUB_REPOSITORY_OWNER_ID="${{github.repository_owner_id}}" \
-          -e GITHUB_REPOSITORY="${{github.repository}}" \
-          -e GITHUB_REPOSITORY_ID="${{github.repository_id}}" \
-          -e GITHUB_EVENT_NAME="${{github.event_name}}" \
-          -e GITHUB_ACTOR="${{github.actor}}" \
-          -e GITHUB_ACTOR_ID="${{github.actor_id}}" \
-          -e FD_API_KEY="${{secrets.FD_API_KEY}}" \
-          -e GITHUB_TOKEN="${{github.token}}" \
-          -e GITHUB_HEAD_REF="${{github.head_ref}}" \
-          -e GITHUB_BASE_REF="${{github.base_ref}}" \
-          -e GITHUB_REF="${{github.ref}}" \
-          -e GITHUB_SHA="${{github.sha}}" \
-          -e WORKSPACE_PATH="/src" \
-          -e LOG_LEVEL="debug" \
-          --entrypoint /bin/sh \
-          -v "${{ github.workspace }}":/src  "${{env.docker_tag}}" -c "duckdefender"
+      - name: Run Trivy in GitHub SBOM mode and submit results to Dependency Graph
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: 'fs'
+          format: 'github'
+          output: 'dependency-results.sbom.json'
+          image-ref: '.'
+          github-pat: ${{ secrets.GITHUB_TOKEN }} # or ${{ secrets.github_pat_name }} if you're using a PAT
