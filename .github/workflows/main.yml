@@ -3,7 +3,7 @@ name: Pull Request
 on:
   push:
     branches:
-    - main
+    - master
 
 ## GITHUB_TOKEN authentication, add only if you're not going to use a PAT
 permissions:
